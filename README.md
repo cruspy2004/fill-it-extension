@@ -77,7 +77,7 @@ Not yet on the Chrome Web Store. To run it now:
 Your data never leaves your browser. There is no server to send it to — the extension contains
 no network code at all. Passwords are never read or stored.
 
-Full policy: [PRIVACY.md](PRIVACY.md)
+Full policy: **https://cruspy2004.github.io/fill-it-extension/** ([source](PRIVACY.md))
 
 ---
 

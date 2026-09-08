@@ -73,7 +73,11 @@ I certify that:
   [x] I do not use or transfer user data to determine creditworthiness or for lending purposes
 
 Privacy policy URL
-  https://cruspy2004.github.io/fill-it-extension/
+  https://cruspy2004.github.io/fill-it-extension/   (live, verified 200)
+
+## Build
+
+Run ./build.sh -> fill-it-v1.0.0.zip (upload this).
 
 ## Assets still needed
 - [ ] Screenshot 1280x800 — the welcome page
