@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fill It — how it works</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font: 15px/1.6 -apple-system, "Segoe UI", Arial, sans-serif; color: #1a1a1a;
+         max-width: 640px; margin: 56px auto 80px; padding: 0 20px; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  .tag { color: #666; font-size: 14px; margin: 0 0 36px; }
+  .step { display: flex; gap: 16px; margin-bottom: 28px; }
+  .num { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #16a34a;
+         color: #fff; font-size: 14px; font-weight: 600; display: flex;
+         align-items: center; justify-content: center; }
+  .step h2 { font-size: 15px; margin: 3px 0 4px; }
+  .step p { margin: 0; color: #555; font-size: 14px; }
+  .cta { display: inline-block; background: #16a34a; color: #fff; padding: 11px 22px;
+         border: none; border-radius: 7px; font-size: 15px; cursor: pointer;
+         text-decoration: none; margin-top: 8px; }
+  .cta:hover { background: #128a3e; }
+  .note { margin-top: 40px; padding: 14px 16px; background: #f8f9fa;
+          border-left: 3px solid #16a34a; font-size: 13.5px; color: #444; }
+  .legend { margin-top: 30px; font-size: 13.5px; color: #555; }
+  .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 2px;
+            margin-right: 6px; vertical-align: middle; }
+  code { background: #f1f3f5; padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>Fill It</h1>
+  <p class="tag">Stop retyping your name, email and phone on every application.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div>
+      <h2>Tell it about yourself, once</h2>
+      <p>Name, email, phone, LinkedIn, GitHub, address. Add any field you want — it's just a list.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div>
+      <h2>On an application, click the icon → Fill this page</h2>
+      <p>Pin Fill It from the puzzle-piece menu so it's always one click away.
+         It reads the form's labels and writes in what it knows.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div>
+      <h2>It learns the rest as you go</h2>
+      <p>Fill something in by hand and submit — Fill It notices and asks if you want to
+         remember it. You review every answer before anything is saved. It never guesses,
+         never invents, and never writes anything you didn't give it.</p>
+    </div>
+  </div>
+
+  <a class="cta" id="start">Add my details →</a>
+
+  <div class="legend">
+    <p><span class="swatch" style="background:#16a34a"></span>Green outline — filled.<br>
+       <span class="swatch" style="background:#e6a700"></span>Amber outline — it didn't recognise
+       this one, fill it yourself.</p>
+  </div>
+
+  <div class="note">
+    <strong>Your data stays in your browser.</strong> It's kept in Chrome's own storage,
+    which syncs through the Google account you're already signed into. There is no server,
+    no account to create, and no network request — this extension can't send your data
+    anywhere because it never talks to anything. Passwords are never read or stored.
+  </div>
+
+  <script src="welcome.js"></script>
+</body>
+</html>
