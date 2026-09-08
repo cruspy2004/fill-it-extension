@@ -1,7 +1,7 @@
 # Privacy Policy — Fill It
 
 **Effective date:** 8 September 2026
-**Contact:** haadheesheeraz2004@gmail.com
+**Contact:** h1grow.copy@gmail.com
 
 ## Short version
 
