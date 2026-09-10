@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Produces fill-it-v<version>.zip for Chrome Web Store upload.
-# Ships only runtime files — repo docs stay out so the reviewer isn't left
-# wondering why a privacy policy page is inside the bundle.
+# Ships only runtime files — repo docs stay out.
 #
 # Uses .NET's ZipFile directly rather than Compress-Archive, because
 # Compress-Archive writes Windows backslashes as path separators and the ZIP
@@ -18,9 +17,9 @@ powershell.exe -NoProfile -Command "
   Add-Type -AssemblyName System.IO.Compression
   \$root = (Get-Location).Path
   \$files = @(
-    'manifest.json','background.js','autodetect.js','content.js',
+    'manifest.json','background.js','content.js',
     'popup.html','popup.js','options.html','options.js',
-    'welcome.html','welcome.js','LICENSE',
+    'welcome.html','LICENSE',
     'lib/fields.js','lib/match.js',
     'icons/icon16.png','icons/icon48.png','icons/icon128.png'
   )

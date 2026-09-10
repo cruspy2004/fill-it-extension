@@ -3,30 +3,14 @@
   "name": "Fill It",
   "version": "1.0.0",
   "description": "Fills job applications with details you saved yourself. No AI, no servers, no account. Your data never leaves your browser.",
-  "permissions": ["storage", "activeTab", "scripting"],
-  "optional_host_permissions": ["*://*/*"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*.greenhouse.io/*",
-        "*://*.lever.co/*",
-        "*://*.ashbyhq.com/*",
-        "*://*.myworkdayjobs.com/*",
-        "*://*.icims.com/*",
-        "*://*.workable.com/*",
-        "*://*.smartrecruiters.com/*",
-        "*://*.jobvite.com/*",
-        "*://*.bamboohr.com/*",
-        "*://*.breezy.hr/*",
-        "*://*.recruitee.com/*"
-      ],
-      "js": ["lib/match.js", "autodetect.js"],
-      "run_at": "document_idle"
-    }
-  ],
   "action": {
     "default_popup": "popup.html"
   },

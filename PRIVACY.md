@@ -1,6 +1,6 @@
 # Privacy Policy — Fill It
 
-**Effective date:** 8 September 2026
+**Effective date:** 10 September 2026
 **Contact:** h1grow.copy@gmail.com
 
 ## Short version
@@ -11,14 +11,14 @@ network request. Everything you enter stays inside your own browser.
 ## What is collected
 
 Fill It stores only the information you type into it, or explicitly approve when it offers to
-remember something. That typically includes:
+remember something after you use "Fill this page". That typically includes:
 
 - Name (first, middle, last, preferred)
 - Email address and phone number
 - Links you choose to save (LinkedIn, GitHub, portfolio)
 - Postal address
 - Voluntary equal-opportunity answers, if you choose to save them
-- Any custom field you create yourself
+- Any custom field created from an application question you answered and chose to remember
 
 ## What is never collected
 
@@ -30,10 +30,7 @@ remember something. That typically includes:
 
 Saved fields are held in `chrome.storage.sync`, which is Chrome's own storage. If you are
 signed into Chrome, Chrome syncs it between your devices under your Google account, the same
-way it syncs your bookmarks. Draft snapshots used by the auto-detect feature are held in
-`chrome.storage.local` and never leave the device.
-
-The developer has no access to any of it.
+way it syncs your bookmarks. The developer has no access to any of it.
 
 ## How it is shared
 
@@ -45,9 +42,7 @@ data. Fill It contains no network code of any kind.
 | Permission | Why |
 |---|---|
 | `storage` | Save your fields |
-| `activeTab` + `scripting` | Fill the page you're looking at, only when you click the button |
-| Host access to job sites | Notice when you've filled a form so it can offer to remember it |
-| `optional_host_permissions` | Only requested if you press "Enable auto-detect here" on a site |
+| `activeTab` + `scripting` | Read and fill the page you're looking at, only when you click the extension's button |
 
 ## Your control
 

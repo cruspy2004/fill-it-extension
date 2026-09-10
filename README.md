@@ -9,55 +9,43 @@ values you gave it.
 
 ## How to use it
 
-**1. Add your details.** After installing, a welcome page opens — click **Add my details** and
-fill in your name, email, phone, LinkedIn, GitHub. Add any field you like; it's just a list.
+**1. Pin it.** Click the puzzle-piece icon in Chrome's toolbar and pin Fill It.
 
-**2. Pin the extension.** Click the puzzle-piece icon in Chrome's toolbar and pin Fill It so
-it's one click away.
+**2. Fill out one form to teach it.** Type your details into any form — a real application,
+or the practice one on the welcome page — then click the Fill It icon. It offers to remember
+what you typed. Tick what you want kept, click Save. You need to do this once before there's
+anything to fill with.
 
-**3. On an application, click the icon → Fill this page.**
+**3. Every application after that: click the icon → Fill this page.**
 
-- 🟢 **Green outline** — filled.
-- 🟠 **Amber outline** — it didn't recognise that field, so fill it yourself.
+- 🟢 **Green outline** — filled from what you saved.
+- 🟠 **Amber outline** — didn't recognise it. It also shows up as a blank in the popup —
+  type the answer there, click **Save & fill**, and it lands on the page and gets remembered
+  for next time.
 
-**4. It learns as you go.** Fill something in by hand and submit. Fill It notices and asks
-whether to remember it. You review every answer before anything is saved.
-
-To fix a value or add a field later: extension icon → **Edit fields**.
+To edit or delete a saved value later: extension icon → **Edit fields**.
 
 ---
 
 ## How it works
 
 ```
-  install
-     │
-     ▼
-  welcome page ──► add your details (options page)
-     │
-     ▼
-  you go apply somewhere
-     │
-     ├─ on a known job site, Fill It watches quietly in the background
-     ▼
-  you fill by hand and submit
-     │
-     ▼
-  "Save 6 answers to Fill It?"  [Review] [Not now]
-     │
-     ▼
-  next application → icon → Fill → done
+   click [ Fill this page ]
+        │
+        ├─ 1. read what's already typed        (catches values you pre-filled by hand)
+        ├─ 2. fill what it knows               green outlines
+        │
+        └─ 3. what it couldn't fill, right in the popup:
+               ☑ How did you hear about us?  [___________]
+               ☑ Years of experience         [___________]
+                                              [ Save & fill ]
 ```
 
-Matching is plain text comparison. For each field on the page it works out the label
-(`aria-labelledby` → `<label for>` → parent `<label>` → `aria-label` → `placeholder` → `name`),
-normalises it, and scores it against the aliases on each of your saved fields. Best score above
-the threshold wins. That's the whole algorithm — you can read it in
+Matching is plain text comparison — no AI, nothing sent anywhere. For each field it works out
+the label (`aria-labelledby` → `<label for>` → parent `<label>` → `aria-label` →
+`placeholder` → `name`), normalises it, and scores it against the aliases on each of your
+saved fields. Best score above the threshold wins. Read it yourself in
 [`lib/match.js`](lib/match.js).
-
-Auto-detect runs on Greenhouse, Lever, Ashby, Workday, iCIMS, Workable, SmartRecruiters,
-Jobvite, BambooHR, Breezy and Recruitee. On any other site, open the popup and press
-**Enable auto-detect here**. The manual **Fill this page** button works everywhere regardless.
 
 ---
 
@@ -86,12 +74,11 @@ Full policy: **https://cruspy2004.github.io/fill-it-extension/** ([source](PRIVA
 | File | Does |
 |---|---|
 | `manifest.json` | MV3 manifest |
-| `popup.html` / `popup.js` | Toolbar popup — Fill, Save this form, review list |
+| `popup.html` / `popup.js` | Toolbar popup — Fill, unmatched-field table |
 | `options.html` / `options.js` | Field editor |
-| `welcome.html` / `welcome.js` | Onboarding |
-| `content.js` | Injected on click — scan, match, fill, combobox handling |
-| `autodetect.js` | Runs on job sites — notices new answers, offers to save |
-| `background.js` | Service worker — onboarding, badge, per-site opt-in |
+| `welcome.html` | Onboarding + practice form |
+| `content.js` | Injected on click — scan, match, fill, combobox handling, write-back |
+| `background.js` | Service worker — seeds defaults, opens onboarding on install |
 | `lib/fields.js` | Default field list |
 | `lib/match.js` | Label resolution + scoring |
 
@@ -99,7 +86,9 @@ Full policy: **https://cruspy2004.github.io/fill-it-extension/** ([source](PRIVA
 
 - The phone **country-code** selector (the `+92` flag) isn't filled — it ignores synthetic mouse
   events. One click to set manually, and it usually infers correctly from your number anyway.
-- Work-experience entries, resume file upload, and fields inside iframes aren't handled yet.
+- Cover letters and other long free-text boxes stay amber — typing a paragraph into a small
+  popup isn't useful, and it's never reusable anyway.
+- Fields inside iframes aren't handled yet.
 
 ## Licence
 

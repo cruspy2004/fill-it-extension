@@ -1,5 +1,5 @@
 // Injected on demand by popup.js. Does the DOM work.
-// Exposes window.__fillItFill() and window.__fillItCapture().
+// Exposes window.__fillItFill() and window.__fillItWrite().
 
 function setNativeValue(el, value) {
   const proto = el.tagName === "TEXTAREA" ? window.HTMLTextAreaElement : window.HTMLInputElement;
@@ -102,6 +102,39 @@ function fillCheckboxOrRadio(el, value) {
   return true;
 }
 
+// Writes one value into one control, reusing the same routines fill uses.
+// Shared by the main fill pass and the popup's "Save & fill" write-back.
+async function writeValue(el, value) {
+  if (isCombobox(el)) return fillCombobox(el, value);
+  if (el.tagName === "SELECT") return fillSelect(el, value);
+  if (el.type === "checkbox" || el.type === "radio") return fillCheckboxOrRadio(el, value);
+  setNativeValue(el, value);
+  return true;
+}
+
+// A field belongs in the popup's "fill these in yourself" table only if a short
+// text answer actually makes sense for it — not a paragraph box, not a toggle.
+function belongsInTable(el) {
+  if (el.tagName === "TEXTAREA") return false;
+  if (el.type === "checkbox" || el.type === "radio") return false;
+  return true;
+}
+
+function currentDisplayValue(el) {
+  if (el.tagName === "SELECT") {
+    const opt = el.selectedOptions[0];
+    return opt && opt.value ? opt.textContent.trim() : "";
+  }
+  if (isCombobox(el)) return comboboxDisplayValue(el);
+  return (el.value || "").trim();
+}
+
+let refCounter = 0;
+function refFor(el) {
+  if (!el.dataset.fillitRef) el.dataset.fillitRef = "fillit-" + (++refCounter) + "-" + Date.now();
+  return el.dataset.fillitRef;
+}
+
 // --- entry points -----------------------------------------------------------
 
 window.__fillItFill = async function () {
@@ -110,37 +143,42 @@ window.__fillItFill = async function () {
   const els = collectFillableFields();
 
   let filled = 0, skipped = 0;
+  const unmatched = [];
 
   for (const el of els) {
-    const match = bestMatch(resolveLabel(el), fields);
+    const label = resolveLabel(el);
+    const match = bestMatch(label, fields);
+
     if (!match) {
       outline(el, "#e6a700");
       skipped++;
+      if (belongsInTable(el)) {
+        unmatched.push({ ref: refFor(el), label: label || el.name || el.id || "(unlabeled field)",
+                          value: currentDisplayValue(el) });
+      }
       continue;
     }
 
-    const value = match.field.value;
-    let ok;
-
-    if (isCombobox(el)) {
-      ok = await fillCombobox(el, value);
-    } else if (el.tagName === "SELECT") {
-      ok = fillSelect(el, value);
-    } else if (el.type === "checkbox" || el.type === "radio") {
-      ok = fillCheckboxOrRadio(el, value);
-    } else {
-      setNativeValue(el, value);
-      ok = true;
-    }
-
+    const ok = await writeValue(el, match.field.value);
     outline(el, ok ? "#16a34a" : "#e6a700");
     ok ? filled++ : skipped++;
   }
 
-  return { filled, skipped };
+  return { filled, skipped, unmatched };
 };
 
-window.__fillItCapture = async function () {
-  const { profile = [] } = await chrome.storage.sync.get("profile");
-  return diffAgainstProfile(readPageValues(), profile);
+// Called after the popup's table is filled in. Writes each answer into its field
+// and reports which ones actually committed, so the popup only offers to remember
+// answers that really landed on the page.
+window.__fillItWrite = async function (answers) {
+  const results = [];
+  for (const { ref, label, value } of answers) {
+    if (!value || !value.trim()) continue;
+    const el = document.querySelector(`[data-fillit-ref="${CSS.escape(ref)}"]`);
+    if (!el) { results.push({ label, value, ok: false }); continue; }
+    const ok = await writeValue(el, value.trim());
+    outline(el, ok ? "#16a34a" : "#e6a700");
+    results.push({ label, value: value.trim(), ok });
+  }
+  return results;
 };
